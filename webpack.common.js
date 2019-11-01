@@ -1,25 +1,50 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+// HtmlWebpackPlugin配置
+const getHtmlConfig = function (name) {
+    return {
+        template: `./src/view/${name}.html`,
+        filename: `${name}.html`,
+        inject: true,
+        hash: true,
+        // chunks: ['common', name]
+        chunks: [name],
+        favicon: './favicon.ico'
+    }
+};
+
 
 module.exports = {
     entry: {
-        home: './src/index.js'
+        index: './src/pages/index/index.js',
+        work: './src/pages/work/index.js'
     },
     output: {
-        filename: "[name].[chunkhash].js",
-        path: path.resolve(__dirname, 'dist')
+        filename: "js/[name].js",
+        path: path.resolve(__dirname, 'dist'),
+        publicPath: "/"
     },
     module: {
         rules: [{
-            test: /\.css$/,
-            exclude: /node_modules/s,
+            test: /\.(le|c)ss$/,
+            exclude: /node_modules/,
             use: [
-                'style-loader',
+                {
+                    loader: MiniCssExtractPlugin.loader,
+                    options: {
+                        hmr: process.env.NODE_ENV === 'development',
+                        reloadAll: true,
+                    },
+                },
+                // 将解析出来的css插入js内部
+                // 'style-loader',
                 'css-loader',
-                'postcss-loader'
-
+                'postcss-loader',
+                'less-loader'
             ]
         }, {
             test: /\.js$/,
@@ -29,7 +54,13 @@ module.exports = {
             test: /\.(png|svg|jpg|gif)$/,
             exclude: /node_modules/,
             use: [
-                'file-loader'
+                {
+                    loader: 'url-loader',
+                    options: {
+                        limit: 1024,
+                        name: 'images/[name].[ext]'
+                    },
+                },
             ]
         }, {
             test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -40,10 +71,18 @@ module.exports = {
         }]
     },
     plugins: [
-        new CleanWebpackPlugin(['dist']),
+        new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'Caching'
         }),
-        new ManifestPlugin()
+        new ManifestPlugin(),
+        // css单独打包
+        new MiniCssExtractPlugin({
+            filename: 'css/[name].css',
+            chunkFilename: '[id].css',
+        }),
+        // html模版处理
+        new HtmlWebpackPlugin(getHtmlConfig('index')),
+        new HtmlWebpackPlugin(getHtmlConfig('work'))
     ],
 };
