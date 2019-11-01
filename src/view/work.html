@@ -1,7 +1,10 @@
 <!doctype html>
 <html class="no-js" lang="">
 
-<%= require('html-loader!./layout/html-head.html') %>
+<head>
+    <title>聆空的网站</title>
+    <%= require('html-loader!./layout/head-common.html') %>
+</head>
 
 <body>
 <!--[if IE]>
@@ -11,10 +14,8 @@
 
 <!-- Add your site or application content here -->
 <p>Hello world! This is HTML5 Boilerplate.</p>
+<%= require('html-loader!./layout/footer.html') %>
 
-<script>
-
-</script>
 </body>
 
 </html>
