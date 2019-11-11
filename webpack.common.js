@@ -4,6 +4,7 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const devMode = process.env.NODE_ENV !== 'production';
 // HtmlWebpackPlugin配置
 const getHtmlConfig = function (name) {
     return {
@@ -11,17 +12,17 @@ const getHtmlConfig = function (name) {
         filename: `${name}.html`,
         inject: true,
         hash: true,
-        // chunks: ['common', name]
-        chunks: [name],
-        favicon: './favicon.ico'
+        chunks: ['common', name],
+        favicon: './src/images/favicon.ico'
     }
 };
 
 
 module.exports = {
     entry: {
+        common: './src/pages/common/index.js',
         index: './src/pages/index/index.js',
-        work: './src/pages/work/index.js'
+        work: './src/pages/work/index.js',
     },
     output: {
         filename: "js/[name].js",
@@ -37,7 +38,6 @@ module.exports = {
                     loader: MiniCssExtractPlugin.loader,
                     options: {
                         hmr: process.env.NODE_ENV === 'development',
-                        reloadAll: true,
                     },
                 },
                 // 将解析出来的css插入js内部
@@ -78,8 +78,8 @@ module.exports = {
         new ManifestPlugin(),
         // css单独打包
         new MiniCssExtractPlugin({
-            filename: 'css/[name].css',
-            chunkFilename: '[id].css',
+            filename: devMode ? 'css/[name].css' : 'css/[name].[hash].css',
+            chunkFilename: devMode ? 'css/[id].css' : 'css/[id].[hash].css',
         }),
         // html模版处理
         new HtmlWebpackPlugin(getHtmlConfig('index')),
