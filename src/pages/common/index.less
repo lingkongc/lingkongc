@@ -1,4 +1,9 @@
 // 全局样式
 @import '~tachyons/css/tachyons.css';
 
-@color-theme: #ff6300;
+@color-orange: #ff6300;
+
+// 解决图片底部多出的3-5px，因为img默认对齐到baseline
+img {
+  vertical-align: bottom;
+}

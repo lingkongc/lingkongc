@@ -51,6 +51,7 @@
   "dependencies": {
     "jquery": "^3.4.1",
     "lodash": "^4.17.15",
-    "nunjucks": "^3.2.0"
+    "nunjucks": "^3.2.0",
+    "scrollreveal": "^4.0.5"
   }
 }

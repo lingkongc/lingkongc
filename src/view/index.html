@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="">
+<html class="no-js" lang="zh">
 <head>
     <%= require('html-loader!./layout/head-common.html') %>
     <title>聆空的网站</title>
@@ -10,7 +10,12 @@
     your browser</a> to improve your experience and security.</p>
 <![endif]-->
 
-<%= require('html-loader!./layout/nav.html') %>
+<%= require('html-loader!./layout/header.html') %>
+<div id="banner" class="bg-blue ph3">
+    <div class="mw9 center h5">
+        <div>this is a banner</div>
+    </div>
+</div>
 <%= require('html-loader!./layout/footer.html') %>
 </body>
 
