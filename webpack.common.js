@@ -1,8 +1,11 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {
+  CleanWebpackPlugin
+} = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 
 const devMode = process.env.NODE_ENV !== 'production';
 // HtmlWebpackPlugin配置
@@ -33,8 +36,7 @@ module.exports = {
     rules: [{
       test: /\.(le|c)ss$/,
       exclude: /node_modules/,
-      use: [
-        {
+      use: [{
           loader: MiniCssExtractPlugin.loader,
           options: {
             hmr: process.env.NODE_ENV === 'development',
@@ -53,15 +55,13 @@ module.exports = {
     }, {
       test: /\.(png|svg|jpg|gif)$/,
       exclude: /node_modules/,
-      use: [
-        {
-          loader: 'url-loader',
-          options: {
-            limit: 1024,
-            name: 'images/[name].[ext]',
-          },
+      use: [{
+        loader: 'url-loader',
+        options: {
+          limit: 1024,
+          name: 'images/[name].[ext]',
         },
-      ],
+      }, ],
     }, {
       test: /\.(woff|woff2|eot|ttf|otf)$/,
       exclude: /node-modules/,
